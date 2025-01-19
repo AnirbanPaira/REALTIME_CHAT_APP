@@ -1,34 +1,50 @@
-import express from 'express';
+import express from "express";
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
-import process from 'process';
-import dotenv from "dotenv"
-import { connectDB } from './lib/db.js';
+import dotenv from "dotenv";
+import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-const app = express();
+import process from "process";
 
 dotenv.config();
-const port = process.env.PORT
+const app = express();
 
-app.use(express.json());
+// Environment variables
+const port = process.env.PORT || 5000;
+const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
+
+// Middleware
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 app.use(cors({
-    origin:"http://localhost:5173",
-    credentials:true
-}
-));
-app.use('/api/auth',authRoutes);
-app.use('/api/message',messageRoutes);
+    origin: clientUrl,
+    credentials: true,
+}));
 
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/messages", messageRoutes);
 
-app.listen(port, (error) =>{
-    if(!error){
-        console.log("Server is Successfully Running,and App is listening on port "+ port);
-        connectDB ();
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error("Unhandled Error:", err);
+    res.status(err.status || 500).json({ message: err.message || "Internal Server Error" });
+});
+
+// Start server
+app.listen(port, (error) => {
+    if (!error) {
+        console.log(`Server is running on port ${port}`);
+        connectDB();
+    } else {
+        console.error("Error starting server:", error);
     }
-    else {
-        console.log("Error occurred, server can't start", error);
-    }
-    }
-);
+});
+
+// Graceful shutdown
+process.on("SIGINT", () => {
+    console.log("Shutting down server...");
+    process.exit();
+});
