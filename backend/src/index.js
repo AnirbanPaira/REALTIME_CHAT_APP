@@ -6,9 +6,9 @@ import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import process from "process";
+import { app,server } from "./lib/socket.js";
 
 dotenv.config();
-const app = express();
 
 // Environment variables
 const port = process.env.PORT || 5000;
@@ -34,7 +34,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(port, (error) => {
+server.listen(port, (error) => {
     if (!error) {
         console.log(`Server is running on port ${port}`);
         connectDB();

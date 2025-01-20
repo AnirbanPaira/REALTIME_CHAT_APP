@@ -1,4 +1,5 @@
 import cloudinary from '../lib/cloudinary.js';
+import { getReceiverSocketId, io } from '../lib/socket.js';
 import Message from '../models/messages.models.js';
 import User from '../models/users.models.js';
 
@@ -74,6 +75,11 @@ export const sendMessage = async (req, res) => {
 
         try {
             await newMessage.save();
+            //real time functionality 
+            const receiverSocketId = getReceiverSocketId(receiverId);
+            if(receiverSocketId){
+                io.to(receiverSocketId).emit("newMessage",newMessage);
+            }
             res.status(200).json(newMessage);
         } catch (err) {
             console.error("Database Save Error:", err.message);
