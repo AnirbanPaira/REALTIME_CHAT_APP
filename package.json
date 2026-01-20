@@ -1,0 +1,17 @@
+{
+  "name": "realtime-chat-app",
+  "version": "1.0.0",
+  "description": "Full-stack real-time chat application with React and Node.js",
+  "scripts": {
+    "install:all": "echo 'Installing dependencies...' && cd backend && npm install && cd ../frontend/RealTimeChaatapp && npm install",
+    "dev": "echo 'Starting development servers...' && (cd backend && npm run dev &) && (cd ../frontend/RealTimeChaatapp && npm run dev)",
+    "build": "cd frontend/RealTimeChaatapp && npm run build",
+    "deploy:backend": "cd backend && echo 'Deploy backend to Render/Railway' && echo 'Push to GitHub and connect to platform'",
+    "deploy:frontend": "cd frontend/RealTimeChaatapp && echo 'Deploy frontend to Vercel' && echo 'Push to GitHub and connect to Vercel'",
+    "test": "echo 'Run tests' && exit 0"
+  },
+  "keywords": ["chat", "realtime", "mongodb", "socket.io", "react"],
+  "author": "",
+  "license": "ISC"
+}
+

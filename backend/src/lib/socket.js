@@ -5,9 +5,13 @@ import express from "express";
 const app = express();
 const server = http.createServer(app);
 
+// Get client URL from environment or default to localhost
+const clientUrl = process.env.CLIENT_URL || "http://localhost:5173";
+
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173"],
+    origin: clientUrl,
+    credentials: true,
   },
 });
 

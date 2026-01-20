@@ -27,6 +27,15 @@ app.use(cors({
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 
+// Health check endpoint (for deployment monitoring)
+app.get("/api/health", (req, res) => {
+    res.status(200).json({ 
+        status: "healthy", 
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime()
+    });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error("Unhandled Error:", err);

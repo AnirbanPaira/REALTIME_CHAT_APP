@@ -6,7 +6,8 @@ node_modules/
 # Build outputs
 dist/
 build/
-*.local
+.next/
+out/
 
 # Environment files
 .env
@@ -32,11 +33,21 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Testing
 coverage/
+.nyc_output/
 
 # Misc
 *.pem
 .cache/
+
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
 
